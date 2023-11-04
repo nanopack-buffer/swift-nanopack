@@ -1,10 +1,10 @@
 import Foundation
 
-typealias Size = Int
-typealias TypeID = Int
+public typealias Size = Int
+public typealias TypeID = Int
 
 /// Provides additional methods for reading from/writing to a NanoPack-formatted Data.
-extension Data {
+public extension Data {
     /// Read the type ID of the message stored in the data buffer.
     func readTypeID() -> TypeID {
         let id: Int32 = read(at: 0)
