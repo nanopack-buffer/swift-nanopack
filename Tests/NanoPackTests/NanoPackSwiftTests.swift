@@ -1,5 +1,5 @@
 import XCTest
-@testable import NanoPackSwift
+@testable import NanoPack
 
 final class NanoPackSwiftTests: XCTestCase {
     func testReadTypeID() throws {
