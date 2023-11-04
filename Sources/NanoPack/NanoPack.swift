@@ -20,6 +20,15 @@ public extension Data {
         }
     }
     
+    /// Read a fixed width integer at an unaligned position.
+    ///
+    /// - parameter at: The index of the first byte of the integer in the Data buffer.
+    func readUnaligned<T: FixedWidthInteger>(at index: Int) -> T {
+        return subdata(in: index..<index + MemoryLayout<T>.size).withUnsafeBytes {
+            $0.load(as: T.self).littleEndian
+        }
+    }
+    
     /// Read a UTF-8 encoded string.
     ///
     /// - parameter at: The index of the first byte of the string in the Data buffer.

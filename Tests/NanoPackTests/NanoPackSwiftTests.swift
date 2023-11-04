@@ -12,7 +12,7 @@ final class NanoPackSwiftTests: XCTestCase {
     }
     
     func testReadInt() throws {
-        let data = Data([4, 5, 2, 3])
+        let data = Data([4, 5, 2, 3, 0])
         
         let int8: Int8 = data.read(at: 1)
         XCTAssertEqual(int8, 5)
@@ -22,6 +22,12 @@ final class NanoPackSwiftTests: XCTestCase {
         
         let int32: Int32 = data.read(at: 0)
         XCTAssertEqual(int32, 50464004)
+    }
+    
+    func testReadUnalignedInt() throws {
+        let data = Data([4, 5, 2, 3, 0])
+        let int32: Int32 = data.readUnaligned(at: 1)
+        XCTAssertEqual(int32, 197125)
     }
     
     func testReadString() throws {
