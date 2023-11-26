@@ -15,7 +15,7 @@ public extension Data {
     ///
     /// - parameter at: The index of the first byte of the integer in the Data buffer.
     func read<T: FixedWidthInteger>(at index: Int) -> T {
-        return readUnaligned(at: startIndex + index)
+        return readUnaligned(at: index)
     }
     
     /// Read a fixed width integer at an unaligned position.
