@@ -1,6 +1,6 @@
 import Foundation
 
-protocol NanoPackMessage {
+public protocol NanoPackMessage {
     init?(data: Data)
     
     func data() -> Data?
