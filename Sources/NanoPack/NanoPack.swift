@@ -120,8 +120,8 @@ public extension Data {
     /// Append the string to the end of the data buffer
     mutating func append(string: String) {
         string.utf8CString.withUnsafeBytes {
-            // drop the null character at the end
-            append(contentsOf: $0.dropLast())
+            let ptr = $0.baseAddress!.assumingMemoryBound(to: UInt8.self)
+            append(ptr, count: $0.count - 1)
         }
     }
 }
