@@ -15,9 +15,7 @@ public extension Data {
     ///
     /// - parameter at: The index of the first byte of the integer in the Data buffer.
     func read<T: FixedWidthInteger>(at index: Int) -> T {
-        return self[index..<index + MemoryLayout<T>.size].withUnsafeBytes {
-            $0.load(as: T.self).littleEndian
-        }
+        return readUnaligned(at: index)
     }
     
     /// Read a fixed width integer at an unaligned position.
@@ -58,7 +56,7 @@ public extension Data {
     ///
     /// - parameter ofField: The number of the field.
     func readSize(ofField index: Int) -> Size {
-        let size: Int32 = read(at: MemoryLayout<Int32>.size * (index + 1))
+        let size: Int32 = readUnaligned(at: MemoryLayout<Int32>.size * (index + 1))
         return Size(size)
     }
 
