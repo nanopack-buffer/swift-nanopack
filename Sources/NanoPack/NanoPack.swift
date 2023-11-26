@@ -7,7 +7,7 @@ public typealias TypeID = Int
 public extension Data {
     /// Read the type ID of the message stored in the data buffer.
     func readTypeID() -> TypeID {
-        let id: Int32 = read(at: startIndex)
+        let id: Int32 = read(at: 0)
         return TypeID(id)
     }
     
