@@ -59,7 +59,7 @@ public extension Data {
     ///
     /// - parameter ofField: The number of the field.
     func readSize(ofField index: Int) -> Size {
-        let size: Int32 = readUnaligned(at: MemoryLayout<Int32>.size * (startIndex + index + 1))
+        let size: Int32 = readUnaligned(at: MemoryLayout<Int32>.size * (index + 1))
         return Size(size)
     }
 
