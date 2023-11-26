@@ -109,7 +109,7 @@ public extension Data {
             append(contentsOf: $0)
         }
     }
-    
+
     /// Append the double to the end of the data buffer
     mutating func append(double: Double) {
         Swift.withUnsafeBytes(of: double) {
