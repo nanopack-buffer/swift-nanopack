@@ -24,12 +24,6 @@ final class NanoPackSwiftTests: XCTestCase {
         XCTAssertEqual(int32, 50464004)
     }
     
-    func testReadUnalignedInt() throws {
-        let data = Data([4, 5, 2, 3, 0])
-        let int32: Int32 = data.readUnaligned(at: 1)
-        XCTAssertEqual(int32, 197125)
-    }
-    
     func testReadString() throws {
         let data = Data([0, 1, 3, 0x62, 0x72, 0x65, 0x61, 0x64, 0x20, 0xf0, 0x9f, 0x91, 0x8d])
         let str: String? = data.read(at: 3, withLength: 10)
@@ -58,9 +52,9 @@ final class NanoPackSwiftTests: XCTestCase {
         XCTAssertEqual(data.readSize(ofField: 1), 2060)
     }
     
-    func testReadUnalignedSize() throws {
+    func testReadSize() throws {
         let data = Data([1, 2, 8, 9, 0, 9])
-        XCTAssertEqual(data.readUnalignedSize(at: 1), 591874)
+        XCTAssertEqual(data.readSize(at: 1), 591874)
     }
     
     func testWriteFieldSize() throws {

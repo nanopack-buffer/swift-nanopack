@@ -15,16 +15,8 @@ public extension Data {
     ///
     /// - parameter at: The index of the first byte of the integer in the Data buffer.
     func read<T: FixedWidthInteger>(at index: Int) -> T {
-        return self[index..<index + MemoryLayout<T>.size].withUnsafeBytes {
-            $0.load(as: T.self).littleEndian
-        }
-    }
-    
-    /// Read a fixed width integer at an unaligned position.
-    ///
-    /// - parameter at: The index of the first byte of the integer in the Data buffer.
-    func readUnaligned<T: FixedWidthInteger>(at index: Int) -> T {
-        return subdata(in: index..<index + MemoryLayout<T>.size).withUnsafeBytes {
+        let offset = startIndex + index
+        return subdata(in: offset..<offset + MemoryLayout<T>.size).withUnsafeBytes {
             $0.load(as: T.self).littleEndian
         }
     }
@@ -35,7 +27,8 @@ public extension Data {
     /// - parameter withLength: The number of bytes of the string.
     ///                         Note that NanoPack strings are not null-terminated, so there is no need to include it in the length.
     func read(at index: Int, withLength: Int) -> String? {
-        return String(data: self[index..<index + withLength], encoding: .utf8)
+        let offset = startIndex + index
+        return String(data: self[offset..<offset + withLength], encoding: .utf8)
     }
     
     /// Read a boolean.
@@ -49,7 +42,8 @@ public extension Data {
     ///
     /// - parameter at: The index of the first byte of the double in the Data buffer.
     func read(at index: Int) -> Double {
-        return self[index..<index + MemoryLayout<Double>.size].withUnsafeBytes {
+        let offset = startIndex + index
+        return self[offset..<offset + MemoryLayout<Double>.size].withUnsafeBytes {
             $0.load(as: Double.self)
         }
     }
@@ -65,8 +59,9 @@ public extension Data {
     /// Read a size that is not byte-aligned.
     ///
     /// - parameter at: The index of the first byte of the encoded size number.
-    func readUnalignedSize(at index: Int) -> Int {
-        return subdata(in: index..<index + MemoryLayout<Int32>.size).withUnsafeBytes {
+    func readSize(at index: Int) -> Int {
+        let offset = startIndex + index
+        return subdata(in: offset..<offset + MemoryLayout<Int32>.size).withUnsafeBytes {
             Size($0.load(as: Int32.self).littleEndian)
         }
     }
@@ -84,11 +79,12 @@ public extension Data {
     /// - parameter size: The size to be written
     /// - parameter at: The index at which the first byte of the encoded size should be
     mutating func write(size: Size, at index: Int) {
+        let offset = startIndex + index
         Swift.withUnsafeBytes(of: Int32(size).littleEndian) {
-            self[index] = $0[0]
-            self[index + 1] = $0[1]
-            self[index + 2] = $0[2]
-            self[index + 3] = $0[3]
+            self[offset] = $0[0]
+            self[offset + 1] = $0[1]
+            self[offset + 2] = $0[2]
+            self[offset + 3] = $0[3]
         }
     }
     
