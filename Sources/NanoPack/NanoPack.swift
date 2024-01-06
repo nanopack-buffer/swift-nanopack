@@ -7,7 +7,7 @@ public typealias TypeID = Int
 public extension Data {
     /// Read the type ID of the message stored in the data buffer.
     func readTypeID() -> TypeID {
-        let id: Int32 = read(at: 0)
+        let id: Int32 = read(at: startIndex)
         return TypeID(id)
     }
     
@@ -15,8 +15,7 @@ public extension Data {
     ///
     /// - parameter at: The index of the first byte of the integer in the Data buffer.
     func read<T: FixedWidthInteger>(at index: Int) -> T {
-        let offset = startIndex + index
-        return subdata(in: offset..<offset + MemoryLayout<T>.size).withUnsafeBytes {
+        return subdata(in: index..<index + MemoryLayout<T>.size).withUnsafeBytes {
             $0.load(as: T.self).littleEndian
         }
     }
@@ -27,23 +26,21 @@ public extension Data {
     /// - parameter withLength: The number of bytes of the string.
     ///                         Note that NanoPack strings are not null-terminated, so there is no need to include it in the length.
     func read(at index: Int, withLength: Int) -> String? {
-        let offset = startIndex + index
-        return String(data: self[offset..<offset + withLength], encoding: .utf8)
+        return String(data: self[index..<index + withLength], encoding: .utf8)
     }
     
     /// Read a boolean.
     ///
     /// - parameter at: The index of the byte of the boolean in the Data buffer.
     func read(at index: Int) -> Bool {
-        return self[index] == 1;
+        return self[index] == 1
     }
     
     /// Read a fixed width integer.
     ///
     /// - parameter at: The index of the first byte of the double in the Data buffer.
     func read(at index: Int) -> Double {
-        let offset = startIndex + index
-        return self[offset..<offset + MemoryLayout<Double>.size].withUnsafeBytes {
+        return self[index..<index + MemoryLayout<Double>.size].withUnsafeBytes {
             $0.load(as: Double.self)
         }
     }
@@ -52,7 +49,7 @@ public extension Data {
     ///
     /// - parameter ofField: The number of the field.
     func readSize(ofField index: Int) -> Size {
-        let size: Int32 = read(at: MemoryLayout<Int32>.size * (index + 1))
+        let size: Int32 = read(at: startIndex + MemoryLayout<Int32>.size * (index + 1))
         return Size(size)
     }
 
@@ -60,8 +57,7 @@ public extension Data {
     ///
     /// - parameter at: The index of the first byte of the encoded size number.
     func readSize(at index: Int) -> Int {
-        let offset = startIndex + index
-        return subdata(in: offset..<offset + MemoryLayout<Int32>.size).withUnsafeBytes {
+        return subdata(in: index..<index + MemoryLayout<Int32>.size).withUnsafeBytes {
             Size($0.load(as: Int32.self).littleEndian)
         }
     }
