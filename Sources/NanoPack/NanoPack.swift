@@ -41,7 +41,8 @@ public extension Data {
     /// - parameter at: The index of the first byte of the double in the Data buffer.
     func read(at index: Int) -> Double {
         return self[index..<index + MemoryLayout<Double>.size].withUnsafeBytes {
-            $0.load(as: Double.self)
+            let bitPattern = $0.load(as: UInt64.self).littleEndian
+            return Double(bitPattern: bitPattern)
         }
     }
     
@@ -104,7 +105,7 @@ public extension Data {
 
     /// Append the double to the end of the data buffer
     mutating func append(double: Double) {
-        Swift.withUnsafeBytes(of: double) {
+        Swift.withUnsafeBytes(of: double.bitPattern.littleEndian) {
             append(contentsOf: $0)
         }
     }
