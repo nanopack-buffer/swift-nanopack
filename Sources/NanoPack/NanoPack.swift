@@ -40,7 +40,7 @@ public extension Data {
     ///
     /// - parameter at: The index of the first byte of the double in the Data buffer.
     func read(at index: Int) -> Double {
-        return self[index..<index + MemoryLayout<Double>.size].withUnsafeBytes {
+        return subdata(in: index..<index + MemoryLayout<Double>.size).withUnsafeBytes {
             let bitPattern = $0.load(as: UInt64.self).littleEndian
             return Double(bitPattern: bitPattern)
         }
