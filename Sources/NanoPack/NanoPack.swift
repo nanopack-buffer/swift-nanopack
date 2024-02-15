@@ -67,8 +67,8 @@ public extension Data {
     ///
     /// - parameter size: The number of bytes the field takes in the buffer
     /// - parameter ofField: The number of the field
-    mutating func write(size: Size, ofField: Int) {
-        write(size: size, at: MemoryLayout<Int32>.size * (ofField + 1))
+    mutating func write(size: Size, ofField: Int, offset: Int = 0) {
+        write(size: size, at: offset + MemoryLayout<Int32>.size * (ofField + 1))
     }
     
     /// Write a size at the given index.
