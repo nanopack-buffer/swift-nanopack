@@ -1,7 +1,7 @@
 import Foundation
 
 public typealias Size = Int
-public typealias TypeID = UInt
+public typealias TypeID = UInt32
 
 /// Provides additional methods for reading from/writing to a NanoPack-formatted Data.
 public extension Data {

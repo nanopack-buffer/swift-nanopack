@@ -73,6 +73,12 @@ final class NanoPackSwiftTests: XCTestCase {
         XCTAssertEqual(data, Data([0, 0, 0, 128, 70, 4, 0]))
     }
     
+    func testAppendTypeID() throws {
+        var data = Data([])
+        data.append(typeID: TypeID(123))
+        XCTAssertEqual(data, Data([123, 0, 0, 0]))
+    }
+    
     func testAppendSize() throws {
         var data = Data([0, 1])
         data.append(size: 178)
