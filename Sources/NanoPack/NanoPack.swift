@@ -85,6 +85,10 @@ public extension Data {
         }
     }
     
+    mutating func append(typeID: TypeID) {
+        append(int: typeID)
+    }
+    
     /// Append a size to the end of the data buffer
     mutating func append(size: Size) {
         append(int: Int32(size))
