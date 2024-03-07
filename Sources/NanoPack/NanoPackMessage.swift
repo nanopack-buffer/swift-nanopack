@@ -13,12 +13,11 @@ public protocol NanoPackMessage {
     /// - parameter bytesRead: The number of bytes read is stored in this inout parameter.
     init?(data: Data, bytesRead: inout Int)
 
+    /// Writes the serialized bytes to the given data at the given offset
+    /// There must be enough space at the offset to accomodate for the size header of the message
+    func write(to data: inout Data, offset: Int)
+
     /// Serializes this message into a NanoPack buffer.
     /// - returns This message serialized into a ``Data``, or `nil` if the message is malformed.
     func data() -> Data?
-    
-    /// Serialzies this message into a NanoPack buffer.
-    /// The first 4 bytes encode the number of bytes taken up by the serialized bytes.
-    /// - returns This message serialized into a ``Data``, or `nil` if the message is malformed.
-    func dataWithLengthPrefix() -> Data?
 }
