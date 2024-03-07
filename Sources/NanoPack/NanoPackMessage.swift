@@ -3,6 +3,8 @@ import Foundation
 /// All NanoPack messages conform to this protocol.
 public protocol NanoPackMessage {
     var typeID: TypeID { get }
+    
+    var headerSize: Int { get }
 
     /// De-serializes the given NanoPack buffer into this message class.
     /// - parameter data: The NanoPack-formatted data to be read.
