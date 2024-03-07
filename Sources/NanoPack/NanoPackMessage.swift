@@ -17,7 +17,7 @@ public protocol NanoPackMessage {
 
     /// Writes the serialized bytes to the given data at the given offset
     /// There must be enough space at the offset to accomodate for the size header of the message
-    func write(to data: inout Data, offset: Int)
+    func write(to data: inout Data, offset: Int) -> Int
 
     /// Serializes this message into a NanoPack buffer.
     /// - returns This message serialized into a ``Data``, or `nil` if the message is malformed.
