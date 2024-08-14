@@ -9,7 +9,7 @@ import Foundation
 /// - parameter offset: The index at which serialized arguments of the call starts.
 /// - parameter msgID: The ID of the RPC message.
 /// - returns: A serialized RPC response to this call.
-public typealias NPRPCCallHandler = (_ requestData: Data, _ offset: Int, _ msgID: NPRPCMessageID) -> Data
+public typealias NPRPCCallHandler = (_ requestData: Data, _ offset: Int, _ msgID: NPRPCMessageID) -> Data?
 
 open class NPRPCServer {
     private let channel: NPRPCServerChannel
@@ -32,7 +32,13 @@ open class NPRPCServer {
         else {
             return
         }
-        let responseData = handler(data, Int(9 + methodNameLen), msgID)
-        channel.sendResponseData(responseData)
+        if let responseData = handler(data, Int(9 + methodNameLen), msgID) {
+            channel.sendResponseData(responseData)
+        } else {
+            var data = Data(capacity: 6)
+            data.append(int: NPRPCMessageType.response.rawValue)
+            data.append(int: methodNameLen)
+            data.append(int: 1)
+        }
     }
 }
