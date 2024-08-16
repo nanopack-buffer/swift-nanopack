@@ -37,7 +37,7 @@ open class NPRPCServer {
         } else {
             var data = Data(capacity: 6)
             data.append(int: NPRPCMessageType.response.rawValue)
-            data.append(int: methodNameLen)
+            data.append(int: msgID)
             data.append(int: 1)
         }
     }
