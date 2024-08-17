@@ -26,7 +26,7 @@ public class NPStandardIOChannel {
     ///
     /// - parameter stdin: A ``Pipe`` to the stdin of a process. Requests will be sent to the process through stdin.
     /// - parameter stdout: A ``Pipe`` to the stdout of a process. Responses will be received through stdout.
-    init(stdin: Pipe, stdout: Pipe) {
+    public init(stdin: Pipe, stdout: Pipe) {
         self.stdin = stdin
         self.stdout = stdout
         _clientChannel = StandardIOClientChannel(stdin: stdin)
