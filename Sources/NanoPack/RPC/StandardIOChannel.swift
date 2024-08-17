@@ -15,10 +15,10 @@ public class NPStandardIOChannel {
     private let stdout: Pipe
     
     private let _clientChannel: StandardIOClientChannel
-    var clientChannel: NPRPCClientChannel { _clientChannel }
+    public var clientChannel: NPRPCClientChannel { _clientChannel }
     
     private let _serverChannel: StandardIOServerChannel
-    var serverChannel: NPRPCServerChannel { _serverChannel }
+    public var serverChannel: NPRPCServerChannel { _serverChannel }
     
     private var isClosed = false
     
