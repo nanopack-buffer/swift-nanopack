@@ -59,6 +59,9 @@ public class NPStandardIOChannel {
         let msgSize = data.withUnsafeBytes { ptr in
             ptr.load(as: UInt32.self).littleEndian
         }
+        guard msgSize > 0 else {
+            return
+        }
 
         var msgData = Data(count: Int(msgSize))
         msgData.withUnsafeMutableBytes { ptr in
