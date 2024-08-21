@@ -51,11 +51,7 @@ public class NPStandardIOChannel {
     }
     
     private func readFromStdout() {
-        var data = Data(count: 4)
-        data.withUnsafeMutableBytes { ptr in
-            let bufptr = ptr.bindMemory(to: UInt8.self)
-            read(stdout.fileHandleForReading.fileDescriptor, bufptr.baseAddress, 4)
-        }
+        let data = stdout.fileHandleForReading.readData(ofLength: 4)
         let msgSize = data.withUnsafeBytes { ptr in
             ptr.load(as: UInt32.self).littleEndian
         }
@@ -63,12 +59,7 @@ public class NPStandardIOChannel {
             return
         }
 
-        var msgData = Data(count: Int(msgSize))
-        msgData.withUnsafeMutableBytes { ptr in
-            let bufptr = ptr.bindMemory(to: UInt8.self)
-            read(stdout.fileHandleForReading.fileDescriptor, bufptr.baseAddress, 4)
-        }
-
+        let msgData = stdout.fileHandleForReading.readData(ofLength: Int(msgSize))
         switch msgData[0] {
         case NPRPCMessageType.response.rawValue:
             _clientChannel.didReceive(response: msgData)
