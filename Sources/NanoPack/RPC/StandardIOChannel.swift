@@ -17,6 +17,7 @@ public class NPStandardIOChannel: NPRPCClientChannel, NPRPCServerChannel {
     private var responseHandler: ((Data) -> Void)?
 
     private var isClosed = false
+    private let stdinLock = NSLock()
     
     /// Creates a new channel for use with an RPC client and server.
     ///
@@ -28,6 +29,9 @@ public class NPStandardIOChannel: NPRPCClientChannel, NPRPCServerChannel {
     }
     
     public func sendRequestData(_ data: Data) {
+        stdinLock.lock()
+        defer { stdinLock.unlock() }
+        
         withUnsafeBytes(of: UInt32(data.count.littleEndian)) {
             stdin.fileHandleForWriting.write(Data($0))
         }
@@ -43,6 +47,9 @@ public class NPStandardIOChannel: NPRPCClientChannel, NPRPCServerChannel {
     }
     
     public func sendResponseData(_ data: Data) {
+        stdinLock.lock()
+        defer { stdinLock.unlock() }
+        
         withUnsafeBytes(of: UInt32(data.count.littleEndian)) {
             stdin.fileHandleForWriting.write(Data($0))
         }
