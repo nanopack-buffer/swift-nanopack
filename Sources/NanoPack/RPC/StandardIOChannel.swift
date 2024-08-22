@@ -80,7 +80,7 @@ private class StandardIOClientChannel: NPRPCClientChannel {
     }
     
     public func sendRequestData(_ data: Data) {
-        withUnsafeBytes(of: data.count.littleEndian) {
+        withUnsafeBytes(of: UInt32(data.count.littleEndian)) {
             stdin.fileHandleForWriting.write(Data($0))
         }
         stdin.fileHandleForWriting.write(data)
@@ -113,7 +113,7 @@ private class StandardIOServerChannel: NPRPCServerChannel {
     }
     
     func sendResponseData(_ data: Data) {
-        withUnsafeBytes(of: data.count.littleEndian) {
+        withUnsafeBytes(of: UInt32(data.count.littleEndian)) {
             stdin.fileHandleForWriting.write(Data($0))
         }
         stdin.fileHandleForWriting.write(data)
